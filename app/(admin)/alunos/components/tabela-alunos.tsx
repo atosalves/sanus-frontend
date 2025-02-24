@@ -16,7 +16,7 @@ import {
 
 import { useState } from "react";
 
-const NUM_TOTAL_ALUNOS_POR_PAGINA = 5;
+const NUM_TOTAL_ALUNOS_POR_PAGINA = 12;
 
 interface TabelaAlunosProps {
     alunos: z.infer<typeof AlunoResumidoDTO>[];
@@ -63,7 +63,7 @@ export default function TabelaAlunos({ alunos }: TabelaAlunosProps) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {alunos.map(({ matricula, usuario, plano }) => (
+                    {alunosPorPagina.map(({ matricula, usuario, plano }) => (
                         <TableRow key={matricula}>
                             <TableCell className="text-center font-medium">{matricula}</TableCell>
                             <TableCell>{usuario.nome}</TableCell>
