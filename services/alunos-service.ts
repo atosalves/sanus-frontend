@@ -34,6 +34,14 @@ export const AlunoDetalhadoDTO = z.object({
     statusDoPlano: z.enum(["ATIVO", "CONGELADO", "BLOQUEADO"]),
 });
 
+export const CriarUsuarioDTO = z.object({
+    admin: z.boolean(),
+    nome: z.string(),
+    email: z.string(),
+    telefone: z.string(),
+    cpf: z.string(),
+});
+
 export const CriarAlunoDTO = z.object({
     usuario: UsuarioDetalhadoDTO,
     planoId: z.coerce.number(),
