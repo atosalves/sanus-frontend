@@ -63,13 +63,13 @@ export default function TabelaAlunos({ alunos }: TabelaAlunosProps) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {alunosPorPagina.map(({ matricula, usuario, plano }) => (
+                    {alunosPorPagina.map(({ matricula, usuario, nomePlano, planoStatus }) => (
                         <TableRow key={matricula}>
                             <TableCell className="text-center font-medium">{matricula}</TableCell>
                             <TableCell>{usuario.nome}</TableCell>
                             <TableCell className="text-center">{usuario.telefone}</TableCell>
-                            <TableCell className="text-center">{plano.nome}</TableCell>
-                            <TableCell className="text-center">{plano.status}</TableCell>
+                            <TableCell className="text-center">{nomePlano}</TableCell>
+                            <TableCell className="text-center">{planoStatus}</TableCell>
                             <TableCell className="text-center space-x-2">
                                 <Button variant="ghost">
                                     <AlertCircle />
