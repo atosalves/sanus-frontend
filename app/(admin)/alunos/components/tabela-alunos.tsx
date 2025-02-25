@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlunoResumidoDTO } from "@/services/alunos-service";
@@ -15,6 +17,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const NUM_TOTAL_ALUNOS_POR_PAGINA = 12;
 
@@ -71,10 +74,12 @@ export default function TabelaAlunos({ alunos }: TabelaAlunosProps) {
                             <TableCell className="text-center">{nomePlano}</TableCell>
                             <TableCell className="text-center">{planoStatus}</TableCell>
                             <TableCell className="text-center space-x-2">
-                                <Button variant="ghost">
-                                    <AlertCircle />
-                                    Mais informações
-                                </Button>
+                                <Link href={`alunos/${matricula}`}>
+                                    <Button variant="ghost">
+                                        <AlertCircle />
+                                        Mais informações
+                                    </Button>
+                                </Link>
                             </TableCell>
                         </TableRow>
                     ))}
