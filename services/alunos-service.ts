@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-import { UsuarioDetalhadoDTO, UsuarioResumidoDTO } from "./usuario-service";
+import { CriarUsuarioDTO, UsuarioDetalhadoDTO, UsuarioResumidoDTO } from "./usuario-service";
+
+const planoStatus = z.enum(["ATIVO", "CONGELADO", "BLOQUEADO"]);
 
 export const AlunoResumidoDTO = z.object({
     matricula: z.string(),
@@ -19,10 +21,10 @@ export const AlunoDetalhadoDTO = z.object({
     congelamentoDias: z.coerce.number(),
     dataAssinatura: z.string(),
     dataVencimento: z.string(),
-    statusDoPlano: z.enum(["ATIVO", "CONGELADO", "BLOQUEADO"]),
+    statusDoPlano: planoStatus,
 });
 
 export const CriarAlunoDTO = z.object({
-    usuario: UsuarioDetalhadoDTO,
+    usuario: CriarUsuarioDTO,
     planoId: z.coerce.number(),
 });
