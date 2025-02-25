@@ -12,14 +12,18 @@ export const AlunoResumidoDTO = z.object({
     planoStatus: z.enum(["ATIVO", "CONGELADO", "BLOQUEADO"]),
 });
 
+export const UsuarioDetalhadoDTO = z.object({
+    admin: z.boolean(),
+    ativo: z.boolean(),
+    nome: z.string(),
+    email: z.string(),
+    telefone: z.string(),
+    cpf: z.string(),
+});
+
 export const AlunoDetalhadoDTO = z.object({
     matricula: z.string(),
-    usuario: z.object({
-        nome: z.string(),
-        email: z.string(),
-        telefone: z.string(),
-        cpf: z.string(),
-    }),
+    usuario: UsuarioDetalhadoDTO,
     plano: z.object({
         nome: z.string(),
         status: z.string(),
@@ -27,13 +31,6 @@ export const AlunoDetalhadoDTO = z.object({
 });
 
 export const CriarAlunoDTO = z.object({
-    matricula: z.string(),
-    usuario: z.object({
-        nome: z.string(),
-        telefone: z.string(),
-    }),
-    plano: z.object({
-        nome: z.string(),
-        status: z.string(),
-    }),
+    usuario: UsuarioDetalhadoDTO,
+    planoId: z.coerce.number(),
 });
