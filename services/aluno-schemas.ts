@@ -1,6 +1,5 @@
 import { z } from "zod";
-
-import { CriarUsuarioDTO, UsuarioDetalhadoDTO, UsuarioResumidoDTO } from "./usuario-service";
+import { UsuarioResumidoDTO, UsuarioDetalhadoDTO, CriarUsuarioDTO } from "./usuario-service";
 
 const planoStatus = z.enum(["ATIVO", "CONGELADO", "BLOQUEADO"]);
 
@@ -12,7 +11,7 @@ export const AlunoResumidoDTO = z.object({
 });
 
 export const AlunoDetalhadoDTO = z.object({
-    usuario: UsuarioDetalhadoDTO,
+    usuarioReponseDto: UsuarioDetalhadoDTO,
     matricula: z.string(),
     idPlano: z.coerce.number(),
     planoNome: z.string(),
@@ -21,7 +20,9 @@ export const AlunoDetalhadoDTO = z.object({
     statusPlano: planoStatus,
 });
 
-export const CriarAlunoDTO = z.object({
-    usuario: CriarUsuarioDTO,
-    planoId: z.coerce.number(),
-});
+export const CriarAlunoDTO = z
+    .object({
+        usuario: CriarUsuarioDTO,
+        planoId: z.coerce.number({ message: "Selecione um plano" }),
+    })
+    .required();
