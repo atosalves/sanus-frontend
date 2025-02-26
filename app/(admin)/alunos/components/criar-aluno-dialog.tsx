@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -9,10 +11,13 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import FormularioAluno from "./formulario-aluno";
+import { useState } from "react";
 
 export default function CriarAlunoDialog() {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
-        <Dialog>
+        <Dialog onOpenChange={() => setIsOpen((prevUpdate) => !prevUpdate)} open={isOpen}>
             <DialogTrigger asChild>
                 <Button>
                     <Plus />
@@ -27,7 +32,7 @@ export default function CriarAlunoDialog() {
                         "Adiconar".
                     </DialogDescription>
                 </DialogHeader>
-                <FormularioAluno />
+                <FormularioAluno setIsOpen={setIsOpen} />
             </DialogContent>
         </Dialog>
     );
