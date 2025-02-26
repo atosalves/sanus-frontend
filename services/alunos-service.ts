@@ -14,14 +14,11 @@ export const AlunoResumidoDTO = z.object({
 export const AlunoDetalhadoDTO = z.object({
     usuario: UsuarioDetalhadoDTO,
     matricula: z.string(),
-    nomeDoPlano: z.string(),
-    descricaoDoPlano: z.string(),
-    diasDaSemanaDisponiveis: z.coerce.number(),
-    valorDoPlano: z.coerce.number(),
-    congelamentoDias: z.coerce.number(),
+    idPlano: z.coerce.number(),
+    planoNome: z.string(),
     dataAssinatura: z.string(),
     dataVencimento: z.string(),
-    statusDoPlano: planoStatus,
+    statusPlano: planoStatus,
 });
 
 export const CriarAlunoDTO = z.object({

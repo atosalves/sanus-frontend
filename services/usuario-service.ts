@@ -6,6 +6,7 @@ export const UsuarioResumidoDTO = z.object({
 });
 
 export const UsuarioDetalhadoDTO = z.object({
+    id: z.coerce.number(),
     admin: z.boolean(),
     ativo: z.boolean(),
     nome: z.string(),
