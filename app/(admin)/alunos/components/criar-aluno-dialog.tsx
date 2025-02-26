@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import FormularioAluno from "./formulario-aluno";
+import FormularioCriarAluno from "./formulario-criar-aluno";
 import { useState } from "react";
 
 export default function CriarAlunoDialog() {
@@ -32,7 +32,7 @@ export default function CriarAlunoDialog() {
                         "Adiconar".
                     </DialogDescription>
                 </DialogHeader>
-                <FormularioAluno setIsOpen={setIsOpen} />
+                <FormularioCriarAluno setIsOpen={setIsOpen} />
             </DialogContent>
         </Dialog>
     );
