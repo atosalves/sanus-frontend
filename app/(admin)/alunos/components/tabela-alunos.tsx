@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlunoResumidoDTO } from "@/services/alunos-service";
+import { AlunoResumidoDTO } from "@/services/aluno-schemas";
 import { AlertCircle } from "lucide-react";
 import { z } from "zod";
 
@@ -19,7 +19,7 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 
-const NUM_TOTAL_ALUNOS_POR_PAGINA = 12;
+const NUM_TOTAL_ALUNOS_POR_PAGINA = 14;
 
 interface TabelaAlunosProps {
     alunos: z.infer<typeof AlunoResumidoDTO>[];
