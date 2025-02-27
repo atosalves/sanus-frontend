@@ -2,55 +2,32 @@
 
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlunoResumidoDTO } from "@/services/aluno-schemas";
 import { AlertCircle } from "lucide-react";
-import { z } from "zod";
 
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-
-import { useState } from "react";
 import Link from "next/link";
+import { useBuscarTodosAlunos } from "@/hooks/use-aluno";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-const NUM_TOTAL_ALUNOS_POR_PAGINA = 14;
+export default function TabelaAlunos() {
+    const { data, isLoading, isError } = useBuscarTodosAlunos();
 
-interface TabelaAlunosProps {
-    alunos: z.infer<typeof AlunoResumidoDTO>[];
-}
+    if (isLoading) return "Carregando";
 
-export default function TabelaAlunos({ alunos }: TabelaAlunosProps) {
-    const numPaginas = Math.ceil(alunos.length / NUM_TOTAL_ALUNOS_POR_PAGINA);
-
-    const [paginaAtual, setPaginaAtual] = useState(1);
-
-    const [alunosPorPagina, setAlunosPorPagina] = useState(alunos.slice(paginaAtual - 1, NUM_TOTAL_ALUNOS_POR_PAGINA));
-
-    function handleProximaPagina() {
-        if (paginaAtual === numPaginas) return;
-
-        setPaginaAtual((prevPag) => prevPag + 1);
-        setAlunosPorPagina(
-            alunos.slice(paginaAtual * NUM_TOTAL_ALUNOS_POR_PAGINA, (paginaAtual + 1) * NUM_TOTAL_ALUNOS_POR_PAGINA)
+    if (isError)
+        return (
+            <Alert variant="destructive">
+                <AlertTitle>Algo deu errado!</AlertTitle>
+                <AlertDescription>Erro ao buscar alunos</AlertDescription>
+            </Alert>
         );
-    }
 
-    function handlePaginaAnterior() {
-        if (paginaAtual === 1) return;
-        setPaginaAtual((prevPag) => prevPag - 1);
-        setAlunosPorPagina(
-            alunos.slice(
-                (paginaAtual - 2) * NUM_TOTAL_ALUNOS_POR_PAGINA,
-                (paginaAtual - 1) * NUM_TOTAL_ALUNOS_POR_PAGINA
-            )
+    if (data?.length === 0)
+        return (
+            <Alert>
+                <AlertTitle>Nenhum aluno encontrado</AlertTitle>
+                <AlertDescription>Clique no botão "Novo aluno" para adicionar um aluno!</AlertDescription>
+            </Alert>
         );
-    }
 
     return (
         <>
@@ -66,7 +43,7 @@ export default function TabelaAlunos({ alunos }: TabelaAlunosProps) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {alunosPorPagina.map(({ matricula, usuario, nomePlano, planoStatus }) => (
+                    {data?.map(({ matricula, usuario, nomePlano, planoStatus }) => (
                         <TableRow key={matricula}>
                             <TableCell className="text-center font-medium">{matricula}</TableCell>
                             <TableCell>{usuario.nome}</TableCell>
@@ -85,31 +62,6 @@ export default function TabelaAlunos({ alunos }: TabelaAlunosProps) {
                     ))}
                 </TableBody>
             </Table>
-            <Pagination className="p-2">
-                <PaginationContent>
-                    <PaginationItem className="w-32 justify-items-end">
-                        {paginaAtual > 1 ? (
-                            <PaginationPrevious href={`#${paginaAtual - 1}`} onClick={handlePaginaAnterior} />
-                        ) : (
-                            <PaginationEllipsis />
-                        )}
-                    </PaginationItem>
-
-                    <PaginationItem>
-                        <PaginationLink href={`#${paginaAtual}`} isActive>
-                            {paginaAtual}
-                        </PaginationLink>
-                    </PaginationItem>
-
-                    <PaginationItem className="w-32">
-                        {paginaAtual < numPaginas ? (
-                            <PaginationNext href={`#${paginaAtual + 1}`} onClick={handleProximaPagina} />
-                        ) : (
-                            <PaginationEllipsis />
-                        )}
-                    </PaginationItem>
-                </PaginationContent>
-            </Pagination>
         </>
     );
 }
