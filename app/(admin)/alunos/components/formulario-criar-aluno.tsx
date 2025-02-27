@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { CriarAlunoDTO } from "@/services/aluno-schemas";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -11,19 +11,18 @@ import { Switch } from "@/components/ui/switch";
 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { Dispatch, SetStateAction, useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-import axios, { AxiosError } from "axios";
-import { Terminal, CheckCircle } from "lucide-react";
-import { toast } from "sonner";
+import { Terminal } from "lucide-react";
 
 interface FormularioAlunoProps {
-    setIsOpen: Dispatch<SetStateAction<boolean>>;
+    onSubmit: SubmitHandler<z.infer<typeof CriarAlunoDTO>>;
+    isPendente: boolean;
+    erro: Error | null;
 }
 
-export default function FormularioCriarAluno({ setIsOpen }: FormularioAlunoProps) {
+export default function FormularioCriarAluno({ onSubmit, isPendente, erro }: FormularioAlunoProps) {
     const form = useForm<z.infer<typeof CriarAlunoDTO>>({
         resolver: zodResolver(CriarAlunoDTO),
         defaultValues: {
@@ -34,28 +33,9 @@ export default function FormularioCriarAluno({ setIsOpen }: FormularioAlunoProps
                 telefone: "",
                 cpf: "",
             },
+            planoId: 0,
         },
     });
-
-    const { isSubmitting } = form.formState;
-
-    const [erro, setErro] = useState<AxiosError | null>(null);
-
-    async function onSubmit(data: z.infer<typeof CriarAlunoDTO>) {
-        await axios
-            .post("http://localhost:8080/alunos", data)
-            .then((resposta) => {
-                if (resposta.status === 200) {
-                    toast("Aluno criado com sucesso", { icon: <CheckCircle color="green" /> });
-                    setIsOpen(false);
-                }
-            })
-            .catch((erro: AxiosError) => {
-                if (erro instanceof AxiosError) {
-                    setErro(erro);
-                }
-            });
-    }
 
     return (
         <Form {...form}>
@@ -202,7 +182,7 @@ export default function FormularioCriarAluno({ setIsOpen }: FormularioAlunoProps
                         <AlertDescription>{erro.message}</AlertDescription>
                     </Alert>
                 )}
-                <Button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isPendente}>
                     Adicionar
                 </Button>
             </form>

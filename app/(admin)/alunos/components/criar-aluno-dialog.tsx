@@ -12,10 +12,11 @@ import {
 import { Plus } from "lucide-react";
 import FormularioCriarAluno from "./formulario-criar-aluno";
 import { useState } from "react";
+import { useCriarAluno } from "@/hooks/use-aluno";
 
 export default function CriarAlunoDialog() {
     const [isOpen, setIsOpen] = useState(false);
-
+    const { mutate, error, isPending } = useCriarAluno();
     return (
         <Dialog onOpenChange={() => setIsOpen((prevUpdate) => !prevUpdate)} open={isOpen}>
             <DialogTrigger asChild>
@@ -32,7 +33,21 @@ export default function CriarAlunoDialog() {
                         "Adiconar".
                     </DialogDescription>
                 </DialogHeader>
-                <FormularioCriarAluno setIsOpen={setIsOpen} />
+                <FormularioCriarAluno
+                    onSubmit={(modelFormData) =>
+                        mutate(
+                            modelFormData,
+
+                            {
+                                onSuccess: () => {
+                                    setIsOpen((prevUpdate) => !prevUpdate);
+                                },
+                            }
+                        )
+                    }
+                    isPendente={isPending}
+                    erro={error}
+                />
             </DialogContent>
         </Dialog>
     );

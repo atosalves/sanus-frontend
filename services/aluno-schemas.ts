@@ -20,9 +20,7 @@ export const AlunoDetalhadoDTO = z.object({
     statusPlano: planoStatus,
 });
 
-export const CriarAlunoDTO = z
-    .object({
-        usuario: CriarUsuarioDTO,
-        planoId: z.coerce.number({ message: "Selecione um plano" }),
-    })
-    .required();
+export const CriarAlunoDTO = z.object({
+    usuario: CriarUsuarioDTO,
+    planoId: z.coerce.number({ message: "Selecione um plano" }),
+});

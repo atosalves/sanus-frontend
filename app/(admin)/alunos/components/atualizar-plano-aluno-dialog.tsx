@@ -12,13 +12,11 @@ import {
 import { ArrowDownUpIcon } from "lucide-react";
 import { useState } from "react";
 import FormularioAtualizarPlanoAluno from "./formulario-atualizar-plano-aluno";
+import { useAtualizaPlanoAluno } from "@/hooks/use-plano-aluno";
 
-interface AtualizaPlanoAlunoDialogProps {
-    matricula: string;
-}
-
-export default function AtualizaPlanoAlunoDialog({ matricula }: AtualizaPlanoAlunoDialogProps) {
+export default function AtualizaPlanoAlunoDialog({ matricula }: { matricula: string }) {
     const [isOpen, setIsOpen] = useState(false);
+    const { mutate, error, isPending } = useAtualizaPlanoAluno();
 
     return (
         <Dialog onOpenChange={() => setIsOpen((prevUpdate) => !prevUpdate)} open={isOpen}>
@@ -36,7 +34,22 @@ export default function AtualizaPlanoAlunoDialog({ matricula }: AtualizaPlanoAlu
                         "Adiconar".
                     </DialogDescription>
                 </DialogHeader>
-                <FormularioAtualizarPlanoAluno matricula={matricula} setIsOpen={setIsOpen} />
+                <FormularioAtualizarPlanoAluno
+                    matricula={matricula}
+                    onSubmit={(modelFormData) =>
+                        mutate(
+                            modelFormData,
+
+                            {
+                                onSuccess: () => {
+                                    setIsOpen((prevUpdate) => !prevUpdate);
+                                },
+                            }
+                        )
+                    }
+                    isPendente={isPending}
+                    erro={error}
+                />
             </DialogContent>
         </Dialog>
     );
