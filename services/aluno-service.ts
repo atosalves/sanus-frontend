@@ -1,48 +1,30 @@
 "use server";
 
-import { AlunoDetalhadoDTO, AlunoResumidoDTO, CriarAlunoDTO } from "./aluno-schemas";
-import { z } from "zod";
+import { fetcher } from "@/lib/utils";
+import { AlunoDetalhado, AlunoResumido, CriarAluno } from "../models/aluno-schemas";
 
 const URL = "http://localhost:8080/alunos";
 
-export async function criarAluno(modelFormData: z.infer<typeof CriarAlunoDTO>): Promise<z.infer<typeof CriarAlunoDTO>> {
-    const response = await fetch(URL, {
+export async function criarAluno(alunoFormData: CriarAluno): Promise<AlunoResumido> {
+    const novoAluno: AlunoResumido = await fetcher(URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(modelFormData),
+        body: JSON.stringify(alunoFormData),
     });
 
-    if (!response.ok) {
-        throw new Error("Algo deu errado.");
-    }
-
-    const data = await response.json();
-
-    return data;
+    return novoAluno;
 }
 
-export async function buscarAluno(matricula: string): Promise<z.infer<typeof AlunoDetalhadoDTO>> {
-    const response = await fetch(`${URL}/${matricula}`);
+export async function buscarAluno(matricula: string): Promise<AlunoDetalhado> {
+    const aluno: AlunoDetalhado = await fetcher(`${URL}/${matricula}`);
 
-    if (!response.ok) {
-        throw new Error("Algo deu errado: " + response.status);
-    }
-
-    const data = await response.json();
-
-    return data;
+    return aluno;
 }
 
-export async function buscarTodosAlunos(): Promise<z.infer<typeof AlunoResumidoDTO>[]> {
-    const response = await fetch(URL);
+export async function buscarTodosAlunos(): Promise<AlunoResumido[]> {
+    const alunos: AlunoResumido[] = await fetcher(URL);
 
-    if (!response.ok) {
-        throw new Error("Algo deu errado: " + response.status);
-    }
-
-    const data = await response.json();
-
-    return z.array(AlunoResumidoDTO).parse(data);
+    return alunos;
 }
